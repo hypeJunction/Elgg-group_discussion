@@ -28,10 +28,4 @@ define(function(require) {
 		});
 	});
 
-	$(document).on('click', '.group-discussion-widget-form [rel="close"]', function(e) {
-		e.preventDefault();
-		// trigger toggle
-		$(this).closest('.group-discussion-widget-form').find('.elgg-button-discussion-add').trigger('click');
-	});
-
 });
