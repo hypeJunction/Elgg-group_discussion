@@ -12,8 +12,10 @@ if (elgg_in_context('dashboard')) {
 
 echo elgg_view('lists/discussions', array(
 	'entity' => $page_owner,
-	'limit' => $entity->num_display ? : 5,
-	'pagination' => false,
+	'options' => array(
+		'limit' => $entity->num_display ? : 5,
+		'pagination' => false,
+	),
 ));
 
 $show_form = isset($entity->show_form) ? $entity->show_form : true;

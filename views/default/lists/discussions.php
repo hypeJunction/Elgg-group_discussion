@@ -37,7 +37,7 @@ if ($entity instanceof ElggUser) {
 	$getter_options['container_guids'] = $guid;
 }
 
-$options = array_merge_recursive($list_options, $options, $getter_options);
+$options = array_merge($list_options, $options, $getter_options);
 
 if (elgg_view_exists('lists/objects')) {
 	$params = $vars;
