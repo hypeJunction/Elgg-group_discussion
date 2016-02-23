@@ -24,12 +24,11 @@ function group_discussion_init() {
 
 	// Group tools cleanup
 	elgg_unregister_widget_type('start_discussion');
+	elgg_unregister_widget_type('group_forum_topics');
 	elgg_register_widget_type('discussion', elgg_echo('group:discussion:widget'), elgg_echo('group:discussion:widget:desc'));
 
 	elgg_register_ajax_view('lists/discussions');
 	elgg_register_ajax_view('input/discussions/access');
-
-	elgg_extend_view('elgg.css', 'widgets/discussion/content.css');
 }
 
 /**

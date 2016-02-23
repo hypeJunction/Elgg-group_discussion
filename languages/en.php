@@ -6,4 +6,6 @@ return array(
 
 	'group:discussion:widget' => 'Group discussions',
 	'group:discussion:widget:desc' => 'Lists latest group discussions',
+	'group:discussion:widget:show_form' => 'Show a form to start a discussion',
+
 );
