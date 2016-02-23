@@ -18,11 +18,21 @@ echo elgg_view('lists/discussions', array(
 	),
 ));
 
+$add_link = '';
 $show_form = isset($entity->show_form) ? $entity->show_form : true;
 if ($show_form) {
 	$title = elgg_echo('discussion:add');
 	$form = elgg_view_form('discussion/save');
-	$mod = elgg_view_module('info', $title, $form);
+	$mod = elgg_view_module('info', $title, $form, array(
+		'id' => "group-discussion-add-$entity->guid",
+		'class' => 'hidden',
+	));
+	$add_link = elgg_view('output/url', array(
+		'text' => $title,
+		'href' => "#group-discussion-add-$entity->guid",
+		'rel' => 'toggle',
+		'class' => 'mrl',
+	));
 	echo elgg_format_element('div', ['class' => 'group-discussion-widget-form'], $mod);
 }
 
@@ -32,7 +42,7 @@ $more_link = elgg_view('output/url', array(
 		));
 echo elgg_format_element('span', [
 	'class' => 'elgg-widget-more',
-		], $more_link);
+		], $add_link . $more_link);
 ?>
 <script>
 	require(['widgets/discussion/content']);
