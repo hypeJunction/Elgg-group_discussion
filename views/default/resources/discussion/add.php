@@ -3,6 +3,7 @@
 elgg_gatekeeper();
 
 $guid = elgg_extract('guid', $vars);
+$container = false;
 
 if ($guid) {
 	elgg_entity_gatekeeper($guid);
@@ -19,7 +20,9 @@ if ($guid) {
 
 $title = elgg_echo('discussion:addtopic');
 
-elgg_push_breadcrumb($container->getDisplayName(), "discussion/owner/{$container->guid}");
+if ($container) {
+	elgg_push_breadcrumb($container->getDisplayName(), "discussion/owner/{$container->guid}");
+}
 elgg_push_breadcrumb($title);
 
 $body_vars = discussion_prepare_form_vars();

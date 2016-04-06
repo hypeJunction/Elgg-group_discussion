@@ -4,27 +4,17 @@ $container_guid = (int) elgg_extract('container_guid', $vars);
 $dbprefix = elgg_get_config('dbprefix');
 $user = elgg_get_logged_in_user_entity();
 $groups = new ElggBatch('elgg_get_entities_from_relationship', array(
-	'selects' => array(
-		'ge.name AS name',
-	),
-	'joins' => array(
-		"JOIN {$dbprefix}groups_entity ge ON ge.guid = e.guid",
-	),
-	'order_by' => 'ge.name ASC',
 	'relationship' => 'member',
 	'relationship_guid' => (int) $user->guid,
 	'inverse_relationship' => false,
-	'metadata_name_value_pairs' => array(
-		'name' => 'forum_enable',
-		'value' => 'yes',
-	),
 	'limit' => 0,
-	'callback' => false,
 		));
 
 $options_values = array();
 foreach ($groups as $group) {
-	$options_values["$group->guid"] = $group->name;
+	if ($group->canWriteToContainer(0, 'group', 'discussion')) {
+		$options_values["$group->guid"] = $group->name;
+	}
 }
 
 $options_values = elgg_trigger_plugin_hook('allowed_containers', 'object:discussion', $vars, $options_values);

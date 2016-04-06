@@ -19,7 +19,7 @@ echo elgg_view('lists/discussions', array(
 ));
 
 $add_link = '';
-$show_form = isset($entity->show_form) ? $entity->show_form : true;
+$show_form = isset($entity->show_form) ? $entity->show_form : $page_owner->canWriteToContainer(0, 'object', 'discussion');
 if ($show_form) {
 	$title = elgg_echo('discussion:add');
 	$form = elgg_view_form('discussion/save');
@@ -38,7 +38,7 @@ if ($show_form) {
 
 $more_link = elgg_view('output/url', array(
 	'text' => elgg_echo('link:view:all'),
-	'href' => elgg_normalize_url($more_href),
+	'href' => elgg_normalize_url($href),
 		));
 echo elgg_format_element('span', [
 	'class' => 'elgg-widget-more',

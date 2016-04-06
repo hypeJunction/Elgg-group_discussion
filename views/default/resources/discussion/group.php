@@ -15,7 +15,9 @@ if (!elgg_instanceof($group, 'group')) {
 elgg_push_breadcrumb($group->name, $group->getURL());
 elgg_push_breadcrumb(elgg_echo('item:object:discussion'));
 
-elgg_register_title_button();
+if ($group->canWriteToContainer(0, 'object', 'discussion')) {
+	elgg_register_title_button();
+}
 
 $title = elgg_echo('item:object:discussion');
 $content = elgg_view('lists/discussions', array(

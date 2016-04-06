@@ -25,10 +25,13 @@ function group_discussion_init() {
 	// Group tools cleanup
 	elgg_unregister_widget_type('start_discussion');
 	elgg_unregister_widget_type('group_forum_topics');
-	elgg_register_widget_type('discussion', elgg_echo('group:discussion:widget'), elgg_echo('group:discussion:widget:desc'));
+	elgg_register_widget_type('discussion', elgg_echo('group:discussion:widget'), elgg_echo('group:discussion:widget:desc'), ['dashboard', 'profile', 'groups']);
 
 	elgg_register_ajax_view('lists/discussions');
 	elgg_register_ajax_view('input/discussions/access');
+
+	add_group_tool_option('admin_only_discussions', elgg_echo('group:discussion:admin_only'), false);
+	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'group_discussion_container_permissions_check');
 }
 
 /**
@@ -82,5 +85,36 @@ function group_discussion_filter_widget_layout_vars($hook, $type, $return, $para
 	$owner = elgg_get_page_owner_entity();
 	if ($owner instanceof ElggGroup && $owner->forum_enable != 'yes') {
 		elgg_unregister_widget_type('group_discussions');
+	}
+}
+
+/**
+ * Check group settings to disallow creation of new discussions
+ *
+ * @param string $hook   "container_permissions_check"
+ * @param string $type   "object"
+ * @param bool   $return Permission
+ * @param array  $params Hook params
+ * @return bool
+ */
+function group_discussion_container_permissions_check($hook, $type, $return, $params) {
+
+	$container = elgg_extract('container', $params);
+	$subtype = elgg_extract('subtype', $params);
+
+	if ($subtype !== 'discussion') {
+		return;
+	}
+
+	if (!$container instanceof ElggGroup) {
+		return;
+	}
+
+	if ($container->forum_enable != 'yes') {
+		return false;
+	}
+
+	if ($container->admin_only_discussions_enable == 'yes' && !$container->canEdit()) {
+		return false;
 	}
 }
