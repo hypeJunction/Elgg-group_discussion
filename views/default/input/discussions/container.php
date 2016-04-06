@@ -1,5 +1,8 @@
 <?php
 $container_guid = (int) elgg_extract('container_guid', $vars);
+if ($container_guid) {
+	return;
+}
 
 $dbprefix = elgg_get_config('dbprefix');
 $user = elgg_get_logged_in_user_entity();
@@ -20,10 +23,6 @@ foreach ($groups as $group) {
 $options_values = elgg_trigger_plugin_hook('allowed_containers', 'object:discussion', $vars, $options_values);
 if (empty($options_values)) {
 	// @todo: do we need to terminate form rendering all together?
-}
-
-if (array_key_exists("$container_guid", $options_values)) {
-	return;
 }
 
 asort($options_values);
