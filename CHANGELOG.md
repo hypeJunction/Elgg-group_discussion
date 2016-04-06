@@ -1,3 +1,13 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/hypeJunction/Elgg-group_discussion/compare/1.1.1...v1.2.0) (2016-04-06)
+
+
+### Features
+
+* **discussion:** adds a tool to enable restricted discussions ([5ad03ea](https://github.com/hypeJunction/Elgg-group_discussion/commit/5ad03ea))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/hypeJunction/Elgg-group_discussion/compare/1.1.0...v1.1.1) (2016-02-23)
 
