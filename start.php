@@ -18,7 +18,7 @@ function group_discussion_init() {
 
 	elgg_register_plugin_hook_handler('view_vars', 'forms/discussion/save', 'group_discussion_filter_form_vars');
 	elgg_register_plugin_hook_handler('view_vars', 'page/layouts/widgets', 'group_discussion_filter_widget_layout_vars');
-	
+
 	// Add a group picker before the discussions edit form
 	elgg_extend_view('forms/discussion/save', 'input/discussions/container', 100);
 
@@ -32,6 +32,7 @@ function group_discussion_init() {
 
 	add_group_tool_option('admin_only_discussions', elgg_echo('group:discussion:admin_only'), false);
 	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'group_discussion_container_permissions_check');
+	elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'group_discussion_reply_container_permissions_check');
 }
 
 /**
@@ -72,7 +73,7 @@ function group_discussion_filter_form_vars($hook, $type, $return, $params) {
 
 /**
  * Remove discussions widget from group context if discussions are not enabled
- * 
+ *
  * @param string $hook   "view_vars"
  * @param string $type   "page/layouts/widgets"
  * @param array  $return View vars
@@ -99,6 +100,7 @@ function group_discussion_filter_widget_layout_vars($hook, $type, $return, $para
  */
 function group_discussion_container_permissions_check($hook, $type, $return, $params) {
 
+	$user = elgg_extract('user', $params);
 	$container = elgg_extract('container', $params);
 	$subtype = elgg_extract('subtype', $params);
 
@@ -114,7 +116,33 @@ function group_discussion_container_permissions_check($hook, $type, $return, $pa
 		return false;
 	}
 
-	if ($container->admin_only_discussions_enable == 'yes' && !$container->canEdit()) {
+	if ($container->admin_only_discussions_enable == 'yes' && !$container->canEdit($user->guid)) {
 		return false;
 	}
+}
+
+/**
+ * Discussion replies should not inherit permissions from discussion but from the parent (group)
+ *
+ * @param string $hook   "container_permissions_check"
+ * @param string $type   "object"
+ * @param bool   $return Permission
+ * @param array  $params Hook params
+ * @return bool
+ */
+function group_discussion_reply_container_permissions_check($hook, $type, $return, $params) {
+
+	$user = elgg_extract('user', $params);
+	$container = elgg_extract('container', $params);
+	$subtype = elgg_extract('subtype', $params);
+
+	if (!elgg_instanceof($container, 'object', 'discussion') || $subtype !== 'discussion_reply') {
+		return;
+	}
+
+	$group = $container->getContainerEntity();
+	if ($group instanceof \ElggGroup && $group->forum_enable != 'yes') {
+		return false;
+	}
+	return $group->canWriteToContainer($user->guid);
 }
