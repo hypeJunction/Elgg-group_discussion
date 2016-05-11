@@ -41,6 +41,9 @@ $options = array_merge($list_options, $options, $getter_options);
 
 if (elgg_view_exists('lists/objects')) {
 	$params = $vars;
+	if (!isset($params['sort'])) {
+		$params['sort'] = 'last_action::desc';
+	}
 	$params['options'] = $options;
 	$params['callback'] = 'elgg_list_entities';
 	echo elgg_view('lists/objects', $params);
