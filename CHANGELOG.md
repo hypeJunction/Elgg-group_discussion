@@ -1,3 +1,15 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/hypeJunction/Elgg-group_discussion/compare/1.2.0...v1.3.0) (2016-05-12)
+
+
+### Bug Fixes
+
+* **forms:** do not display container input if container is set ([e89f951](https://github.com/hypeJunction/Elgg-group_discussion/commit/e89f951))
+* **permissions:** add custom logic to discussion reply permissions ([51d6060](https://github.com/hypeJunction/Elgg-group_discussion/commit/51d6060))
+* **ux:** show discussions with latest replies first by default ([637cd83](https://github.com/hypeJunction/Elgg-group_discussion/commit/637cd83))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/hypeJunction/Elgg-group_discussion/compare/1.1.1...v1.2.0) (2016-04-06)
 
